@@ -7,13 +7,15 @@ project = PythonPackage(
     install_requires=[
         "pulumi>=3.0.0,<4.0.0",
         "pynacl",
+        "atlassian-python-api",
         "GitPython",
         "python-dotenv",
         "phitoduck-projen",
         "typer",
         "rich",
+        "requests",
     ],
-    # entrypoints={"repogen": "repogen.cli:run"}
+    entrypoints={"bitbucket": "bitbucket_iac.cli:run"}
 )
 project.gitignore.add_patterns("!sample.env")
 

@@ -2,8 +2,6 @@ set dotenv-load := true
 
 install:
     python -m pip install -e .
-    # install the generated GitHub api client
-    python -m pip install -e ./github-api-client
 
 pulumi-up:
     #!/bin/bash
@@ -19,33 +17,14 @@ pulumi-destroy:
 pulumi-cancel:
     pulumi cancel
 
-github-public-key:
-    #!/bin/bash
-    REPO_ID=543829938
-    ENVIRONMENT_NAME=Sandbox
-    REPO_NAME=sample-repo
-    curl \
-        -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer $GITHUB_TOKEN" \
-        https://api.github.com/repositories/$REPO_ID/environments/$REPO_NAME:$ENVIRONMENT_NAME/secrets/public-key
-        # https://api.github.com/repositories/$REPO_ID/environments/$ENVIRONMENT_NAME/secrets/public-key
 
-generate-github-api-python-client-deprecated:
+generate-bitbucket-cloud-api-python-client:
     #!/bin/bash
-    OPENAPI_JSON_FPATH="github-openapi.json"
-    # wget https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json \
-    #     -O $OPENAPI_JSON_FPATH
-    docker run --rm \
-        -v $PWD:/local openapitools/openapi-generator-cli generate \
-        -i /local/$OPENAPI_JSON_FPATH \
-        -g python \
-        -o /local/github-client/
-
-generate-github-api-python-client:
-    #!/bin/bash
-    GITHUB_OPENAPI_JSON_URL="https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json"
-    which pipx || python -m pip install pipx
-    pipx run openapi-python-client generate --url "$GITHUB_OPENAPI_JSON_URL" 
+    BITBUCKET_CLOUD_OPENAPI_JSON_URL="https://api.bitbucket.org/swagger.json"
+    
+    # I used swagger.io to convert the openapi v2 swagger.json that bitbucket
+    # uses to the newer OpenAPI v3 version which this tool supports
+    pipx run openapi-python-client generate --path ./bitbucket.openapi3.yaml
 
 
 update-project:

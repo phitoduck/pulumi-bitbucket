@@ -13,6 +13,10 @@
       "type": "devenv"
     },
     {
+      "name": "atlassian-python-api",
+      "type": "runtime"
+    },
+    {
       "name": "GitPython",
       "type": "runtime"
     },
